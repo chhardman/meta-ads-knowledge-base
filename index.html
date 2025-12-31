@@ -3,445 +3,430 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meta Ads Knowledge Base</title>
+    <title>Meta Ads Command Center | Marketing Knowledge Base</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
             --primary: #1877f2;
-            --primary-dark: #1565c0;
-            --bg-dark: #1a1a2e;
-            --bg-sidebar: #16213e;
-            --bg-content: #0f0f1a;
-            --text: #e8e8e8;
-            --text-muted: #a0a0a0;
-            --border: #2a2a4a;
+            --bg-dark: #0a0a0f;
+            --bg-sidebar: #0f0f18;
+            --bg-content: #060608;
+            --bg-card: #12121a;
+            --text: #f0f0f0;
+            --text-muted: #888;
+            --border: #1e1e2e;
             --accent: #00d4ff;
+            --accent-glow: rgba(0, 212, 255, 0.15);
             --success: #00c853;
             --warning: #ffc107;
+            --danger: #ff5252;
+            --gradient: linear-gradient(135deg, #00d4ff 0%, #1877f2 100%);
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: var(--bg-content);
             color: var(--text);
             line-height: 1.6;
         }
 
-        .container {
-            display: flex;
-            min-height: 100vh;
-        }
+        .container { display: flex; min-height: 100vh; }
 
         /* Sidebar */
         .sidebar {
-            width: 280px;
+            width: 260px;
             background: var(--bg-sidebar);
             border-right: 1px solid var(--border);
             position: fixed;
             height: 100vh;
             overflow-y: auto;
             transition: transform 0.3s ease;
+            z-index: 100;
         }
 
         .sidebar-header {
-            padding: 24px 20px;
+            padding: 20px;
             border-bottom: 1px solid var(--border);
+            background: linear-gradient(180deg, rgba(0,212,255,0.05) 0%, transparent 100%);
         }
 
         .sidebar-header h1 {
-            font-size: 1.25rem;
-            color: var(--accent);
-            margin-bottom: 4px;
+            font-size: 1.1rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 2px;
         }
 
-        .sidebar-header p {
-            font-size: 0.8rem;
+        .sidebar-header .tagline {
+            font-size: 0.7rem;
             color: var(--text-muted);
         }
 
-        .nav-section {
-            padding: 16px 0;
-            border-bottom: 1px solid var(--border);
-        }
+        .nav-section { padding: 12px 0; border-bottom: 1px solid var(--border); }
 
         .nav-section-title {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             color: var(--text-muted);
             padding: 0 20px;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .nav-item {
-            display: block;
-            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            padding: 8px 20px;
             color: var(--text);
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             transition: all 0.2s;
             cursor: pointer;
+            border-left: 2px solid transparent;
         }
 
-        .nav-item:hover {
-            background: rgba(255,255,255,0.05);
-            color: var(--accent);
-        }
+        .nav-item:hover { background: rgba(255,255,255,0.03); color: var(--accent); }
 
         .nav-item.active {
-            background: rgba(0, 212, 255, 0.1);
+            background: var(--accent-glow);
             color: var(--accent);
-            border-left: 3px solid var(--accent);
+            border-left-color: var(--accent);
         }
 
-        .nav-item-icon {
-            margin-right: 10px;
+        .nav-icon { width: 20px; margin-right: 10px; font-size: 0.9rem; }
+
+        .nav-badge {
+            margin-left: auto;
+            background: var(--danger);
+            color: white;
+            font-size: 0.6rem;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-weight: 600;
         }
 
         /* Main Content */
         .main {
             flex: 1;
-            margin-left: 280px;
-            padding: 40px;
-            max-width: 1000px;
+            margin-left: 260px;
+            padding: 30px 40px;
+            max-width: 1100px;
         }
 
-        .content-section {
-            display: none;
+        .content-section { display: none; }
+        .content-section.active { display: block; animation: fadeIn 0.3s ease; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .content-section.active {
-            display: block;
-        }
+        /* Typography */
+        h1 { font-size: 1.8rem; margin-bottom: 6px; font-weight: 600; }
+        h2 { font-size: 1.3rem; margin: 28px 0 14px; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+        h3 { font-size: 1.05rem; margin: 20px 0 10px; }
+        h4 { font-size: 0.9rem; margin: 14px 0 8px; color: var(--text-muted); }
+        p { margin-bottom: 14px; }
+        .subtitle { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 24px; }
 
-        h1 {
-            font-size: 2rem;
-            margin-bottom: 8px;
-            color: var(--text);
-        }
-
-        h2 {
-            font-size: 1.5rem;
-            margin: 32px 0 16px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid var(--border);
-            color: var(--accent);
-        }
-
-        h3 {
-            font-size: 1.15rem;
-            margin: 24px 0 12px;
-            color: var(--text);
-        }
-
-        h4 {
-            font-size: 1rem;
-            margin: 16px 0 8px;
-            color: var(--text-muted);
-        }
-
-        p {
-            margin-bottom: 16px;
-            color: var(--text);
-        }
-
-        .subtitle {
-            font-size: 1rem;
-            color: var(--text-muted);
-            margin-bottom: 32px;
-        }
-
-        /* Cards */
-        .card {
-            background: var(--bg-sidebar);
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, rgba(0,212,255,0.1) 0%, rgba(24,119,242,0.05) 100%);
             border: 1px solid var(--border);
             border-radius: 12px;
             padding: 24px;
             margin-bottom: 24px;
         }
 
-        .card-title {
-            font-size: 1.1rem;
-            margin-bottom: 12px;
-            color: var(--accent);
+        .hero-title { font-size: 1.4rem; margin-bottom: 8px; }
+
+        /* Alert Banner */
+        .alert-banner {
+            background: linear-gradient(135deg, rgba(255,82,82,0.15) 0%, rgba(255,82,82,0.05) 100%);
+            border: 1px solid rgba(255,82,82,0.3);
+            border-radius: 8px;
+            padding: 14px 18px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
+        .alert-banner.info {
+            background: linear-gradient(135deg, rgba(0,212,255,0.15) 0%, rgba(0,212,255,0.05) 100%);
+            border-color: rgba(0,212,255,0.3);
+        }
+
+        .alert-icon { font-size: 1.2rem; }
+        .alert-text { font-size: 0.85rem; }
+        .alert-text strong { color: var(--accent); }
+
+        /* Stats Grid */
         .stat-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
-            margin: 24px 0;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 14px;
+            margin: 20px 0;
         }
 
         .stat-card {
-            background: var(--bg-dark);
+            background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 20px;
+            border-radius: 10px;
+            padding: 18px;
             text-align: center;
+            transition: transform 0.2s, border-color 0.2s;
         }
+
+        .stat-card:hover { transform: translateY(-2px); border-color: var(--accent); }
 
         .stat-value {
-            font-size: 2rem;
+            font-size: 1.6rem;
             font-weight: 700;
-            color: var(--accent);
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .stat-label {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-top: 4px;
+        .stat-label { font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; }
+
+        /* Cards */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 16px;
         }
+
+        .card-title { font-size: 1rem; margin-bottom: 10px; color: var(--accent); }
+
+        /* Quick Actions Grid */
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 14px;
+            margin: 20px 0;
+        }
+
+        .action-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 18px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .action-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0,212,255,0.1);
+        }
+
+        .action-icon { font-size: 1.5rem; margin-bottom: 10px; }
+        .action-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 4px; }
+        .action-desc { font-size: 0.75rem; color: var(--text-muted); }
 
         /* Tables */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 16px 0;
-            font-size: 0.9rem;
-        }
-
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid var(--border);
-        }
-
-        th {
-            background: var(--bg-dark);
-            color: var(--accent);
-            font-weight: 600;
-        }
-
-        tr:hover {
-            background: rgba(255,255,255,0.02);
-        }
+        table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 0.85rem; }
+        th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+        th { background: var(--bg-card); color: var(--accent); font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        tr:hover { background: rgba(255,255,255,0.02); }
 
         /* Lists */
-        ul, ol {
-            margin: 16px 0;
-            padding-left: 24px;
-        }
-
-        li {
-            margin-bottom: 8px;
-        }
+        ul, ol { margin: 14px 0; padding-left: 22px; }
+        li { margin-bottom: 6px; font-size: 0.9rem; }
 
         /* Blockquotes */
         blockquote {
-            border-left: 4px solid var(--accent);
-            padding: 16px 20px;
-            margin: 24px 0;
-            background: var(--bg-dark);
+            border-left: 3px solid var(--accent);
+            padding: 14px 18px;
+            margin: 18px 0;
+            background: var(--bg-card);
             border-radius: 0 8px 8px 0;
             font-style: italic;
             color: var(--text-muted);
+            font-size: 0.9rem;
         }
 
         /* Code */
-        code {
-            background: var(--bg-dark);
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 0.85rem;
-            color: var(--accent);
-        }
-
-        pre {
-            background: var(--bg-dark);
-            padding: 16px;
-            border-radius: 8px;
-            overflow-x: auto;
-            margin: 16px 0;
-        }
-
-        pre code {
-            padding: 0;
-        }
+        code { background: var(--bg-card); padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; color: var(--accent); }
+        pre { background: var(--bg-card); padding: 16px; border-radius: 8px; overflow-x: auto; margin: 14px 0; font-size: 0.8rem; }
 
         /* Tags */
         .tag {
             display: inline-block;
-            padding: 4px 12px;
-            background: rgba(0, 212, 255, 0.15);
+            padding: 3px 10px;
+            background: var(--accent-glow);
             color: var(--accent);
-            border-radius: 20px;
-            font-size: 0.75rem;
-            margin-right: 8px;
-            margin-bottom: 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            margin-right: 6px;
+            margin-bottom: 6px;
         }
-
-        .tag.green {
-            background: rgba(0, 200, 83, 0.15);
-            color: var(--success);
-        }
-
-        .tag.yellow {
-            background: rgba(255, 193, 7, 0.15);
-            color: var(--warning);
-        }
+        .tag.green { background: rgba(0,200,83,0.15); color: var(--success); }
+        .tag.yellow { background: rgba(255,193,7,0.15); color: var(--warning); }
+        .tag.red { background: rgba(255,82,82,0.15); color: var(--danger); }
 
         /* Hook Cards */
         .hook-card {
             background: var(--bg-dark);
             border: 1px solid var(--border);
             border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 16px;
+            padding: 16px;
+            margin-bottom: 14px;
         }
-
-        .hook-card h4 {
-            color: var(--accent);
-            margin: 0 0 12px;
-        }
-
+        .hook-card h4 { color: var(--accent); margin: 0 0 10px; font-size: 0.95rem; }
         .hook-example {
-            background: var(--bg-sidebar);
-            padding: 12px 16px;
-            border-radius: 6px;
-            margin: 8px 0;
-            border-left: 3px solid var(--primary);
-        }
-
-        /* Search */
-        .search-box {
-            padding: 12px 20px;
-        }
-
-        .search-input {
-            width: 100%;
+            background: var(--bg-card);
             padding: 10px 14px;
-            background: var(--bg-dark);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--text);
-            font-size: 0.9rem;
+            border-radius: 6px;
+            margin: 6px 0;
+            border-left: 3px solid var(--primary);
+            font-size: 0.85rem;
         }
 
-        .search-input:focus {
-            outline: none;
-            border-color: var(--accent);
+        /* Updates Timeline */
+        .update-item {
+            display: flex;
+            gap: 14px;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .update-date {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            min-width: 80px;
+        }
+        .update-content { flex: 1; }
+        .update-title { font-weight: 600; font-size: 0.9rem; margin-bottom: 4px; }
+        .update-desc { font-size: 0.8rem; color: var(--text-muted); }
+
+        /* Footer */
+        .updated-date {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 30px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
         }
 
         /* Mobile */
         .mobile-toggle {
             display: none;
             position: fixed;
-            top: 16px;
-            left: 16px;
+            top: 14px;
+            left: 14px;
             z-index: 1001;
-            background: var(--primary);
+            background: var(--accent);
             border: none;
-            color: white;
-            padding: 12px;
+            color: var(--bg-dark);
+            padding: 10px 14px;
             border-radius: 8px;
             cursor: pointer;
+            font-weight: 600;
         }
 
         @media (max-width: 768px) {
-            .sidebar {
-                transform: translateX(-100%);
-                z-index: 1000;
-            }
-
-            .sidebar.open {
-                transform: translateX(0);
-            }
-
-            .main {
-                margin-left: 0;
-                padding: 20px;
-                padding-top: 70px;
-            }
-
-            .mobile-toggle {
-                display: block;
-            }
-
-            .stat-grid {
-                grid-template-columns: 1fr;
-            }
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.open { transform: translateX(0); }
+            .main { margin-left: 0; padding: 16px; padding-top: 60px; }
+            .mobile-toggle { display: block; }
+            .stat-grid { grid-template-columns: repeat(2, 1fr); }
+            .action-grid { grid-template-columns: 1fr; }
         }
 
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .content-section.active {
-            animation: fadeIn 0.3s ease;
-        }
-
-        /* Updated date */
-        .updated-date {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border);
+        /* Print Styles */
+        @media print {
+            .sidebar, .mobile-toggle { display: none; }
+            .main { margin-left: 0; }
         }
     </style>
 </head>
 <body>
-    <button class="mobile-toggle" onclick="toggleSidebar()">☰</button>
+    <button class="mobile-toggle" onclick="toggleSidebar()">Menu</button>
 
     <div class="container">
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <h1>📊 Meta Ads KB</h1>
-                <p>Marketing Knowledge Database</p>
-            </div>
-
-            <div class="search-box">
-                <input type="text" class="search-input" placeholder="Search..." onkeyup="searchContent(this.value)">
+                <h1>Meta Ads Command Center</h1>
+                <div class="tagline">Marketing Intelligence Hub</div>
             </div>
 
             <div class="nav-section">
-                <div class="nav-section-title">Overview</div>
+                <div class="nav-section-title">Command Center</div>
                 <a class="nav-item active" onclick="showSection('dashboard')">
-                    <span class="nav-item-icon">🏠</span> Dashboard
+                    <span class="nav-icon">🎯</span> Dashboard
                 </a>
+                <a class="nav-item" onclick="showSection('updates')">
+                    <span class="nav-icon">🔔</span> Platform Updates
+                    <span class="nav-badge">NEW</span>
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Strategy</div>
                 <a class="nav-item" onclick="showSection('report')">
-                    <span class="nav-item-icon">📈</span> Trends Report
+                    <span class="nav-icon">📊</span> Trends Report
+                </a>
+                <a class="nav-item" onclick="showSection('calendar')">
+                    <span class="nav-icon">📅</span> 2026 Calendar
+                </a>
+                <a class="nav-item" onclick="showSection('benchmarks')">
+                    <span class="nav-icon">📈</span> Benchmarks
                 </a>
             </div>
 
             <div class="nav-section">
                 <div class="nav-section-title">Swipe Files</div>
                 <a class="nav-item" onclick="showSection('video-hooks')">
-                    <span class="nav-item-icon">🎬</span> Video Hooks
+                    <span class="nav-icon">🎬</span> Video Hooks
                 </a>
                 <a class="nav-item" onclick="showSection('headline-hooks')">
-                    <span class="nav-item-icon">✍️</span> Headlines & Copy
+                    <span class="nav-icon">✍️</span> Headlines & Copy
+                </a>
+                <a class="nav-item" onclick="showSection('scripts')">
+                    <span class="nav-icon">📝</span> UGC Scripts
+                    <span class="nav-badge">NEW</span>
                 </a>
             </div>
 
             <div class="nav-section">
                 <div class="nav-section-title">Frameworks</div>
                 <a class="nav-item" onclick="showSection('creative-frameworks')">
-                    <span class="nav-item-icon">🎨</span> Creative Frameworks
+                    <span class="nav-icon">🎨</span> Creative Frameworks
                 </a>
                 <a class="nav-item" onclick="showSection('testing-frameworks')">
-                    <span class="nav-item-icon">🧪</span> Testing Frameworks
+                    <span class="nav-icon">🧪</span> Testing Frameworks
+                </a>
+                <a class="nav-item" onclick="showSection('checklists')">
+                    <span class="nav-icon">✅</span> Checklists
+                    <span class="nav-badge">NEW</span>
                 </a>
             </div>
 
             <div class="nav-section">
                 <div class="nav-section-title">Resources</div>
-                <a class="nav-item" onclick="showSection('competitors')">
-                    <span class="nav-item-icon">🔍</span> Competitor Tracking
+                <a class="nav-item" onclick="showSection('ai-tools')">
+                    <span class="nav-icon">🤖</span> AI Tools & Prompts
+                    <span class="nav-badge">NEW</span>
                 </a>
-                <a class="nav-item" onclick="showSection('benchmarks')">
-                    <span class="nav-item-icon">📊</span> Benchmarks
+                <a class="nav-item" onclick="showSection('troubleshooting')">
+                    <span class="nav-icon">🔧</span> Troubleshooting
+                    <span class="nav-badge">NEW</span>
+                </a>
+                <a class="nav-item" onclick="showSection('landing-pages')">
+                    <span class="nav-icon">🖥️</span> Landing Pages
+                    <span class="nav-badge">NEW</span>
+                </a>
+                <a class="nav-item" onclick="showSection('competitors')">
+                    <span class="nav-icon">🔍</span> Competitor Tracking
                 </a>
                 <a class="nav-item" onclick="showSection('tools')">
-                    <span class="nav-item-icon">🛠️</span> Tools & Resources
+                    <span class="nav-icon">🛠️</span> Tools Directory
                 </a>
             </div>
         </aside>
@@ -449,326 +434,704 @@
         <main class="main">
             <!-- Dashboard -->
             <section id="dashboard" class="content-section active">
-                <h1>Meta Ads Knowledge Base</h1>
-                <p class="subtitle">Your central hub for Meta advertising tactics, hooks, and creative trends</p>
+                <h1>Meta Ads Command Center</h1>
+                <p class="subtitle">Your intelligence hub for Meta advertising success</p>
+
+                <div class="alert-banner info">
+                    <span class="alert-icon">🔔</span>
+                    <span class="alert-text"><strong>December 2025:</strong> Advantage+ is now default for new campaigns. AI personalization went live Dec 16. <a href="#" onclick="showSection('updates')" style="color: var(--accent);">See all updates →</a></span>
+                </div>
 
                 <div class="stat-grid">
                     <div class="stat-card">
                         <div class="stat-value">70-80%</div>
-                        <div class="stat-label">Of ad performance comes from creative</div>
+                        <div class="stat-label">Ad success from creative</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value">+18%</div>
-                        <div class="stat-label">CPM increase YoY (Q1 2025)</div>
+                        <div class="stat-value">$12.74</div>
+                        <div class="stat-label">Average CPM (June 2025)</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-value">3 sec</div>
-                        <div class="stat-label">Time to hook viewers</div>
+                        <div class="stat-label">To hook viewers</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value">2-4 wks</div>
-                        <div class="stat-label">Recommended creative refresh</div>
+                        <div class="stat-value">-9%</div>
+                        <div class="stat-label">CPA with Advantage+</div>
                     </div>
                 </div>
 
-                <h2>Key Insights for 2025</h2>
-
-                <div class="card">
-                    <div class="card-title">🔄 The Andromeda Shift</div>
-                    <p>Meta's new AI-driven ad delivery system fundamentally changed how ads are served. Creative now acts as the primary targeting signal - Meta uses your ad creative to determine who sees it.</p>
-                    <div style="margin-top: 12px;">
-                        <span class="tag green">Broad targeting wins</span>
-                        <span class="tag green">Simple structures</span>
-                        <span class="tag yellow">Creative is king</span>
+                <h2>Quick Actions</h2>
+                <div class="action-grid">
+                    <div class="action-card" onclick="showSection('scripts')">
+                        <div class="action-icon">📝</div>
+                        <div class="action-title">Get UGC Scripts</div>
+                        <div class="action-desc">Ready-to-use video scripts for creators</div>
+                    </div>
+                    <div class="action-card" onclick="showSection('ai-tools')">
+                        <div class="action-icon">🤖</div>
+                        <div class="action-title">AI Prompts</div>
+                        <div class="action-desc">Generate hooks, copy, and angles fast</div>
+                    </div>
+                    <div class="action-card" onclick="showSection('checklists')">
+                        <div class="action-icon">✅</div>
+                        <div class="action-title">Launch Checklist</div>
+                        <div class="action-desc">Pre-flight check for every campaign</div>
+                    </div>
+                    <div class="action-card" onclick="showSection('troubleshooting')">
+                        <div class="action-icon">🔧</div>
+                        <div class="action-title">Fix Ads</div>
+                        <div class="action-desc">Diagnose and fix performance issues</div>
                     </div>
                 </div>
 
+                <h2>The 2025 Reality Check</h2>
                 <div class="card">
-                    <div class="card-title">📹 What's Working Now</div>
+                    <div class="card-title">The Andromeda Shift</div>
+                    <p>Meta's Andromeda algorithm changed everything. Creative is now the primary targeting signal. What broke vs what works:</p>
+
+                    <table>
+                        <thead>
+                            <tr><th>Stopped Working</th><th>Works Now</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Narrow interest targeting</td><td>Broad audiences (10M+)</td></tr>
+                            <tr><td>Lookalike audiences</td><td>Let AI find audiences</td></tr>
+                            <tr><td>Complex structures</td><td>Simple (1 campaign, 1 ad set)</td></tr>
+                            <tr><td>Minor variations</td><td>8-15 different concepts</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">What's Working Right Now</div>
                     <ul>
                         <li><strong>UGC-style video</strong> - 7-15 seconds, 4:5 ratio, natural lighting</li>
                         <li><strong>Carousel ads</strong> - 35% higher CTR than single-image</li>
-                        <li><strong>Advantage+ campaigns</strong> - 9% lower CPA on average</li>
-                        <li><strong>8-15 different ad concepts</strong> per campaign (not minor variations)</li>
+                        <li><strong>Advantage+ campaigns</strong> - 9% lower CPA, 14% lower cost per qualified lead</li>
+                        <li><strong>Creative velocity</strong> - 5-10 new creatives tested weekly</li>
+                        <li><strong>Broad targeting</strong> - Trust the algorithm with audiences 10M+</li>
                     </ul>
                 </div>
 
-                <div class="card">
-                    <div class="card-title">⚠️ What Stopped Working</div>
-                    <ul>
-                        <li>Narrow interest targeting</li>
-                        <li>Lookalike audiences</li>
-                        <li>Complex campaign structures</li>
-                        <li>Testing minor ad variations</li>
-                    </ul>
-                </div>
-
-                <h2>Quick Reference</h2>
-
+                <h2>Target Metrics</h2>
                 <table>
                     <thead>
-                        <tr>
-                            <th>Metric</th>
-                            <th>Target Range</th>
-                        </tr>
+                        <tr><th>Metric</th><th>Good</th><th>Excellent</th></tr>
                     </thead>
                     <tbody>
-                        <tr><td>CTR</td><td>0.9% - 1.6%</td></tr>
-                        <tr><td>Hook Rate</td><td>25%+</td></tr>
-                        <tr><td>CPM</td><td>$10-15 (varies)</td></tr>
-                        <tr><td>ROAS (Blended)</td><td>2.5 - 4.0</td></tr>
-                        <tr><td>Video Length</td><td>7-15 seconds</td></tr>
+                        <tr><td>CTR</td><td>0.9-1.2%</td><td>1.2%+</td></tr>
+                        <tr><td>Hook Rate (3-sec)</td><td>25%</td><td>35%+</td></tr>
+                        <tr><td>CPC</td><td>$0.70-1.20</td><td>&lt;$0.70</td></tr>
+                        <tr><td>ROAS (Blended)</td><td>2.5-3.5</td><td>4.0+</td></tr>
                     </tbody>
                 </table>
 
                 <p class="updated-date">Last updated: December 31, 2025</p>
             </section>
 
-            <!-- Trends Report -->
-            <section id="report" class="content-section">
-                <h1>Meta Ads Trends Report</h1>
-                <p class="subtitle">December 31, 2025 - Comprehensive analysis</p>
+            <!-- Platform Updates -->
+            <section id="updates" class="content-section">
+                <h1>Platform Updates</h1>
+                <p class="subtitle">Stay ahead of algorithm changes and new features</p>
 
-                <h2>Executive Summary</h2>
+                <div class="alert-banner">
+                    <span class="alert-icon">⚡</span>
+                    <span class="alert-text"><strong>Critical:</strong> Advantage+ is now the default for new campaigns. Review your campaign setup.</span>
+                </div>
+
+                <h2>December 2025</h2>
+
+                <div class="update-item">
+                    <div class="update-date">Dec 16</div>
+                    <div class="update-content">
+                        <div class="update-title">AI Personalization Goes Live</div>
+                        <div class="update-desc">Meta now uses AI interactions to personalize content and ads including posts and reels. Affects how ads are served and targeted.</div>
+                        <span class="tag red">High Impact</span>
+                    </div>
+                </div>
+
+                <div class="update-item">
+                    <div class="update-date">Dec</div>
+                    <div class="update-content">
+                        <div class="update-title">Advantage+ Now Default</div>
+                        <div class="update-desc">Ads Manager updated to make Advantage+ automation tools the default option for new ad campaigns.</div>
+                        <span class="tag red">High Impact</span>
+                    </div>
+                </div>
+
+                <div class="update-item">
+                    <div class="update-date">Dec</div>
+                    <div class="update-content">
+                        <div class="update-title">Opportunity Score Feature</div>
+                        <div class="update-desc">New 0-100 score evaluates campaign optimization based on 40+ personalized recommendations. Available via API and Ads Manager.</div>
+                        <span class="tag yellow">Medium Impact</span>
+                    </div>
+                </div>
+
+                <div class="update-item">
+                    <div class="update-date">Dec</div>
+                    <div class="update-content">
+                        <div class="update-title">Lead Gen Enhancements</div>
+                        <div class="update-desc">Advantage+ Leads now globally available. New automated Messenger follow-up. SMS and Work Email verification tools added.</div>
+                        <span class="tag red">High Impact for Lead Gen</span>
+                    </div>
+                </div>
+
+                <div class="update-item">
+                    <div class="update-date">Dec</div>
+                    <div class="update-content">
+                        <div class="update-title">Dynamic Creative Upgrades</div>
+                        <div class="update-desc">AI now highlights selling points as overlays, auto-highlights video key moments, and can display positive reviews on ads.</div>
+                        <span class="tag red">High Impact</span>
+                    </div>
+                </div>
+
+                <h2>Major 2025 Changes</h2>
+
+                <div class="card">
+                    <div class="card-title">The Andromeda Algorithm (Q1 2025)</div>
+                    <p><strong>Impact: Critical</strong> - Complete overhaul of ad delivery with ML models 10,000x larger than before.</p>
+                    <ul>
+                        <li>Creative is now the primary targeting signal</li>
+                        <li>Broad targeting outperforms narrow</li>
+                        <li>Simple campaign structures work best</li>
+                        <li>Narrow targeting, lookalikes, complex structures all underperform</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Cost Increases</div>
+                    <ul>
+                        <li>CPMs up 18%+ YoY in Q1</li>
+                        <li>Average CPM hit $12.74 by June</li>
+                        <li>CPL increased 21% to $27.66</li>
+                    </ul>
+                </div>
+
+                <p class="updated-date">Full changelog: /updates/platform-updates.md</p>
+            </section>
+
+            <!-- UGC Scripts -->
+            <section id="scripts" class="content-section">
+                <h1>UGC Video Scripts</h1>
+                <p class="subtitle">Ready-to-use scripts. Hand these to creators.</p>
+
+                <div class="card">
+                    <div class="card-title">Script Structure: H-P-S-C</div>
+                    <p>All scripts follow: <strong>Hook → Problem → Solution → CTA</strong></p>
+                    <ul>
+                        <li><strong>Hook (0-3 sec):</strong> Stop the scroll</li>
+                        <li><strong>Problem (3-8 sec):</strong> Relatable pain point</li>
+                        <li><strong>Solution (8-15 sec):</strong> Product demonstration</li>
+                        <li><strong>CTA (15-20 sec):</strong> Clear next step</li>
+                    </ul>
+                </div>
+
+                <h2>Script Library</h2>
+
+                <div class="hook-card">
+                    <h4>Script 1: The Skeptic Turned Believer</h4>
+                    <p><em>Best for: Products with skeptical audiences, premium pricing</em></p>
+                    <div class="hook-example">
+                        <strong>HOOK:</strong> "I'm not gonna lie, I thought this was just another overhyped [product]..."<br><br>
+                        <strong>PROBLEM:</strong> "I've tried literally everything for [problem]. Spent hundreds on stuff that didn't work."<br><br>
+                        <strong>SOLUTION:</strong> "But after using [Product] for [timeframe], I'm actually shocked. Look at this [specific result]."<br><br>
+                        <strong>CTA:</strong> "Link's in bio. They have [offer] right now."
+                    </div>
+                </div>
+
+                <div class="hook-card">
+                    <h4>Script 2: The Problem Call-Out</h4>
+                    <p><em>Best for: Products solving clear pain points</em></p>
+                    <div class="hook-example">
+                        <strong>HOOK:</strong> "If you're still dealing with [specific problem], stop scrolling."<br><br>
+                        <strong>PROBLEM:</strong> "I know how frustrating it is when [describe frustration]. You've probably tried [common solution] and it didn't work."<br><br>
+                        <strong>SOLUTION:</strong> "This is [Product]. It actually [key benefit] because [simple reason]."<br><br>
+                        <strong>CTA:</strong> "They're doing [X]% off this week. Link in bio."
+                    </div>
+                </div>
+
+                <div class="hook-card">
+                    <h4>Script 3: The Comment Response</h4>
+                    <p><em>Best for: Addressing objections, building trust</em></p>
+                    <div class="hook-example">
+                        <strong>HOOK:</strong> [Show comment: "Those are so overpriced"] "Okay I get this comment a lot, let me explain..."<br><br>
+                        <strong>RESPONSE:</strong> "So yes, [Product] is [price], but here's what you're getting... [quality/feature 1], [feature 2], and [feature 3]."<br><br>
+                        <strong>COMPARISON:</strong> "Compare that to [cheaper alternative] which is [problem with cheap option]."<br><br>
+                        <strong>CTA:</strong> "If you want to see for yourself, link's in bio."
+                    </div>
+                </div>
+
+                <div class="hook-card">
+                    <h4>Script 4: The Before/After</h4>
+                    <p><em>Best for: Transformation products</em></p>
+                    <div class="hook-example">
+                        <strong>HOOK:</strong> [Split screen] "[Timeframe] with [Product]. Same lighting, no filter."<br><br>
+                        <strong>BODY:</strong> "Here's what I was dealing with before... And here's after [timeframe] of using [Product]..."<br><br>
+                        <strong>PROOF:</strong> "I was honestly surprised because I've tried [competitors] and nothing worked like this."<br><br>
+                        <strong>CTA:</strong> "Link below - they have a [guarantee] so you can try risk-free."
+                    </div>
+                </div>
+
+                <h2>Funnel Positioning</h2>
+                <table>
+                    <thead>
+                        <tr><th>Funnel Stage</th><th>Best Scripts</th><th>Tone</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Top (Awareness)</td><td>Problem Call-Out, FOMO</td><td>Casual, discoverable</td></tr>
+                        <tr><td>Middle (Consideration)</td><td>Skeptic, Comment Response</td><td>Informative, credible</td></tr>
+                        <tr><td>Bottom (Conversion)</td><td>Before/After, Routine</td><td>Confident, urgent</td></tr>
+                    </tbody>
+                </table>
+
+                <p class="updated-date">Full script library: /scripts/ugc-video-scripts.md</p>
+            </section>
+
+            <!-- AI Tools -->
+            <section id="ai-tools" class="content-section">
+                <h1>AI Tools & Prompts</h1>
+                <p class="subtitle">Use AI to 10x your creative output. Volume-first testing wins in 2025.</p>
+
                 <blockquote>
-                    The Meta advertising landscape underwent a fundamental shift in 2025 with the rollout of Andromeda - Meta's new AI-driven ad delivery system using machine learning models 10,000x larger than before.
+                    "Successful brands use a 'Volume-First' testing strategy. Instead of betting on one 'perfect' video, use AI to generate 20-50 variations, launch simultaneously, and let the algorithm pick the winner."
                 </blockquote>
+
+                <h2>AI Tools by Category</h2>
+
+                <h3>Ad Copy Generation</h3>
+                <table>
+                    <thead>
+                        <tr><th>Tool</th><th>Price</th><th>Best For</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Claude</td><td>Free/$20</td><td>Strategy + long-form copy</td></tr>
+                        <tr><td>ChatGPT</td><td>Free/$20</td><td>Quick variations</td></tr>
+                        <tr><td>AdCreative.ai</td><td>$29+</td><td>Full ad creation</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Visual Creation</h3>
+                <table>
+                    <thead>
+                        <tr><th>Tool</th><th>Price</th><th>Best For</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Canva Magic</td><td>Free/$13</td><td>All-in-one, Magic Resize</td></tr>
+                        <tr><td>Midjourney</td><td>$10+</td><td>Unique imagery</td></tr>
+                        <tr><td>DALL-E 3</td><td>Via ChatGPT+</td><td>Quick concepts</td></tr>
+                    </tbody>
+                </table>
+
+                <h2>Copy This Prompt: Hook Generator</h2>
+                <div class="hook-card">
+                    <h4>Generate 20 Hook Variations</h4>
+                    <pre style="white-space: pre-wrap; font-size: 0.8rem;">I'm creating Facebook video ads for [PRODUCT] which [WHAT IT DOES].
+
+Target audience: [DESCRIBE AUDIENCE]
+Main pain point: [PAIN POINT]
+Key benefit: [BENEFIT]
+
+Generate 20 different video hook options (first 3 seconds):
+1. Question hooks (5)
+2. Problem call-out hooks (5)
+3. Curiosity/intrigue hooks (5)
+4. Social proof hooks (5)
+
+Each hook should be under 10 words and stop the scroll immediately.</pre>
+                </div>
+
+                <h2>Copy This Prompt: Full UGC Script</h2>
+                <div class="hook-card">
+                    <h4>Generate Complete Script</h4>
+                    <pre style="white-space: pre-wrap; font-size: 0.8rem;">Write a 20-second UGC-style video ad script for [PRODUCT].
+
+Product: [NAME AND DESCRIPTION]
+Price point: [PRICE]
+Target customer: [WHO]
+Main problem: [PROBLEM]
+Key differentiator: [WHAT MAKES IT DIFFERENT]
+
+Use this structure:
+- Hook (0-3 sec): Attention grabber
+- Problem (3-8 sec): Relatable pain point
+- Solution (8-15 sec): Show the product working
+- CTA (15-20 sec): Clear call to action
+
+Write in casual, conversational language. Include [VIDEO DIRECTION] notes.</pre>
+                </div>
+
+                <p class="updated-date">Full prompts library: /tools/ai-tools-prompts.md</p>
+            </section>
+
+            <!-- Troubleshooting -->
+            <section id="troubleshooting" class="content-section">
+                <h1>Troubleshooting Guide</h1>
+                <p class="subtitle">When ads aren't performing, use this diagnostic framework.</p>
+
+                <h2>Quick Diagnostic</h2>
+                <pre style="background: var(--bg-card); padding: 16px; border-radius: 8px; font-size: 0.8rem;">
+Ads not delivering?
+├── Check: Budget & bidding issues
+├── Check: Audience too narrow
+├── Check: Ad in review/rejected
+└── Check: Account/payment issues
+
+Ads delivering but no results?
+├── Check: Wrong optimization goal
+├── Check: Creative fatigue
+├── Check: Landing page mismatch
+└── Check: Tracking broken
+
+Results declining over time?
+├── Check: Ad fatigue
+├── Check: Audience saturation
+├── Check: Seasonal factors
+└── Check: Competitor activity</pre>
+
+                <h2>Common Problems & Fixes</h2>
+
+                <div class="card">
+                    <div class="card-title">Problem: Ads Not Delivering</div>
+                    <p><strong>Budget Too Low:</strong> Set budget at 10x your target CPA. If target is $50, daily budget should be $500+.</p>
+                    <p><strong>Audience Too Narrow:</strong> Facebook needs 1,000+ users. Expand geo, remove interest layers, test broad targeting.</p>
+                    <p><strong>Bid Too Low:</strong> Switch to Lowest Cost (automatic), remove bid caps temporarily.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Problem: Low CTR (&lt;0.5%)</div>
+                    <ul>
+                        <li>Hook not working → Test 5-10 different hooks</li>
+                        <li>Wrong audience → Review demographics, test broader</li>
+                        <li>Looks like an ad → Use UGC-style, remove heavy branding</li>
+                        <li>Weak value prop → Clarify benefit, add social proof</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Problem: Low Conversions</div>
+                    <ul>
+                        <li>Landing page slow → Speed should be &lt;3 seconds</li>
+                        <li>Message mismatch → Ad promise must match page headline</li>
+                        <li>Wrong optimization → Switch to Conversions, not Traffic</li>
+                        <li>Tracking broken → Check Pixel + Conversions API</li>
+                    </ul>
+                </div>
+
+                <h2>Quick Reference</h2>
+                <table>
+                    <thead>
+                        <tr><th>Problem</th><th>First Check</th><th>Quick Fix</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Not delivering</td><td>Budget/bid</td><td>Increase budget, remove caps</td></tr>
+                        <tr><td>Low CTR</td><td>Hook/creative</td><td>Test new hooks</td></tr>
+                        <tr><td>High CPC</td><td>Audience</td><td>Broaden targeting</td></tr>
+                        <tr><td>Low CVR</td><td>Landing page</td><td>Speed + message match</td></tr>
+                        <tr><td>Declining</td><td>Fatigue</td><td>Fresh creative</td></tr>
+                    </tbody>
+                </table>
+
+                <p class="updated-date">Full troubleshooting guide: /guides/troubleshooting.md</p>
+            </section>
+
+            <!-- Checklists -->
+            <section id="checklists" class="content-section">
+                <h1>Checklists</h1>
+                <p class="subtitle">Print these. Use them. Every campaign, every time.</p>
+
+                <h2>Campaign Launch Checklist</h2>
+                <div class="card">
+                    <div class="card-title">Before You Launch</div>
+                    <ul>
+                        <li>☐ Clear campaign objective defined</li>
+                        <li>☐ Budget set (10x target CPA minimum)</li>
+                        <li>☐ 8-15 genuinely different ad concepts</li>
+                        <li>☐ Multiple formats (video + static + carousel)</li>
+                        <li>☐ Hook optimized for first 3 seconds</li>
+                        <li>☐ Headline under 40 characters</li>
+                        <li>☐ Pixel + Conversions API verified</li>
+                        <li>☐ Landing page loads &lt;3 seconds</li>
+                        <li>☐ Message matches between ad and page</li>
+                        <li>☐ Mobile tested</li>
+                    </ul>
+                </div>
+
+                <h2>Weekly Optimization Checklist</h2>
+                <div class="card">
+                    <div class="card-title">Monday: Performance Review</div>
+                    <ul>
+                        <li>☐ Review metrics vs. last week</li>
+                        <li>☐ Check CTR trends (target: 0.9-1.6%)</li>
+                        <li>☐ Review CPA/ROAS vs. target</li>
+                        <li>☐ Check frequency (&lt;3-4 ideal)</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Tuesday: Creative Health</div>
+                    <ul>
+                        <li>☐ Identify fatigued ads (declining CTR)</li>
+                        <li>☐ Pause underperformers ($50-100 no results)</li>
+                        <li>☐ Scale winners (20% max increase)</li>
+                        <li>☐ Check competitor Ad Library</li>
+                    </ul>
+                </div>
+
+                <h2>Scaling Checklist</h2>
+                <div class="card">
+                    <div class="card-title">Before Scaling</div>
+                    <ul>
+                        <li>☐ Consistent performance 5+ days</li>
+                        <li>☐ CPA at or below target</li>
+                        <li>☐ Learning phase exited</li>
+                        <li>☐ Frequency still healthy (&lt;3)</li>
+                        <li>☐ Increase budget 20% max per change</li>
+                        <li>☐ Wait 2-3 days between increases</li>
+                    </ul>
+                </div>
+
+                <p class="updated-date">Full checklists: /checklists/all-checklists.md</p>
+            </section>
+
+            <!-- Calendar -->
+            <section id="calendar" class="content-section">
+                <h1>2026 Marketing Calendar</h1>
+                <p class="subtitle">Plan ahead. BFCM needs 90-120 days of warm-up.</p>
+
+                <div class="alert-banner info">
+                    <span class="alert-icon">📅</span>
+                    <span class="alert-text">41% of shoppers start holiday shopping in October or earlier. Start planning NOW.</span>
+                </div>
+
+                <h2>Annual Overview</h2>
+                <table>
+                    <thead>
+                        <tr><th>Quarter</th><th>Key Events</th><th>CPM Trend</th><th>Focus</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Q1</td><td>New Year, Valentine's</td><td><span class="tag green">-20-30%</span></td><td>Test, build audiences</td></tr>
+                        <tr><td>Q2</td><td>Mother's Day, Memorial</td><td>Baseline</td><td>Scale winners, Q4 planning</td></tr>
+                        <tr><td>Q3</td><td>Back to School, Labor Day</td><td><span class="tag yellow">+10-20%</span></td><td>Heavy testing, BFCM prep</td></tr>
+                        <tr><td>Q4</td><td>BFCM, Holidays</td><td><span class="tag red">+40-80%</span></td><td>Scale, maximize</td></tr>
+                    </tbody>
+                </table>
+
+                <h2>Key 2026 Dates</h2>
+                <table>
+                    <thead>
+                        <tr><th>Date</th><th>Event</th><th>Prep Time</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Feb 14</td><td>Valentine's Day</td><td>2 weeks</td></tr>
+                        <tr><td>May 10</td><td>Mother's Day</td><td>3 weeks</td></tr>
+                        <tr><td>Jun 21</td><td>Father's Day</td><td>3 weeks</td></tr>
+                        <tr><td>Mid-Jul</td><td>Prime Day (est)</td><td>2-3 months</td></tr>
+                        <tr><td>Aug</td><td>Back to School</td><td>2 months</td></tr>
+                        <tr><td>Oct 7-15</td><td>Prime Big Deal Days (est)</td><td>2-3 months</td></tr>
+                        <tr><td>Nov 27</td><td>Black Friday</td><td>3-4 months</td></tr>
+                        <tr><td>Nov 30</td><td>Cyber Monday</td><td>3-4 months</td></tr>
+                    </tbody>
+                </table>
+
+                <h2>Budget Rule</h2>
+                <blockquote>
+                    If Q4 drives 40% of annual sales, give it roughly 40% of yearly promo spend.
+                </blockquote>
+
+                <p class="updated-date">Full calendar: /planning/seasonal-calendar.md</p>
+            </section>
+
+            <!-- Landing Pages -->
+            <section id="landing-pages" class="content-section">
+                <h1>Landing Page Optimization</h1>
+                <p class="subtitle">Your ad gets the click. Your landing page gets the conversion.</p>
 
                 <div class="stat-grid">
                     <div class="stat-card">
-                        <div class="stat-value">$12.74</div>
-                        <div class="stat-label">Average CPM (June 2025)</div>
+                        <div class="stat-value">90%</div>
+                        <div class="stat-label">Meta traffic is mobile</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">&lt;3s</div>
+                        <div class="stat-label">Page load target</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">53%</div>
+                        <div class="stat-label">Abandon if &gt;3 seconds</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">12x</div>
+                        <div class="stat-label">Lower intent with traffic opt.</div>
+                    </div>
+                </div>
+
+                <h2>The Message Match Rule</h2>
+                <blockquote>
+                    Your landing page should mirror the promise in the ad. Same headline. Same offer. Same tone. Creates instant "I'm in the right place" feeling.
+                </blockquote>
+
+                <h2>Landing Page Checklist</h2>
+                <div class="card">
+                    <ul>
+                        <li>☐ Headline matches ad headline/hook</li>
+                        <li>☐ Offer is identical (same discount)</li>
+                        <li>☐ Page loads in &lt;3 seconds</li>
+                        <li>☐ CTA visible above fold</li>
+                        <li>☐ Mobile optimized</li>
+                        <li>☐ Social proof visible</li>
+                        <li>☐ Single focused goal</li>
+                        <li>☐ Minimal form fields</li>
+                    </ul>
+                </div>
+
+                <h2>CTA Best Practices</h2>
+                <table>
+                    <thead>
+                        <tr><th>Weak</th><th>Strong</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Submit</td><td>Get My Discount</td></tr>
+                        <tr><td>Learn More</td><td>See How It Works</td></tr>
+                        <tr><td>Buy</td><td>Add to Cart - 30% Off</td></tr>
+                        <tr><td>Click Here</td><td>Start Free Trial</td></tr>
+                    </tbody>
+                </table>
+
+                <p class="updated-date">Full guide: /guides/landing-pages.md</p>
+            </section>
+
+            <!-- Include other sections from original: report, video-hooks, headline-hooks, creative-frameworks, testing-frameworks, competitors, benchmarks, tools -->
+
+            <!-- Trends Report -->
+            <section id="report" class="content-section">
+                <h1>Meta Ads Trends Report</h1>
+                <p class="subtitle">December 2025 - Comprehensive Analysis</p>
+
+                <div class="stat-grid">
+                    <div class="stat-card">
+                        <div class="stat-value">70-80%</div>
+                        <div class="stat-label">Creative drives performance</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">+18%</div>
+                        <div class="stat-label">CPM increase YoY</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-value">60%</div>
                         <div class="stat-label">UGC share of paid social</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value">-9%</div>
-                        <div class="stat-label">CPA with Advantage+</div>
-                    </div>
-                    <div class="stat-card">
                         <div class="stat-value">+35%</div>
-                        <div class="stat-label">Carousel CTR vs. static</div>
+                        <div class="stat-label">Carousel CTR vs static</div>
                     </div>
                 </div>
 
-                <h2>Top Performing Ad Formats</h2>
+                <h2>Top Performing Formats</h2>
+                <div class="card">
+                    <div class="card-title">Video (Reels/Stories)</div>
+                    <ul>
+                        <li>Optimal length: 7-15 seconds</li>
+                        <li>Aspect ratio: 4:5 performs 15% better than square</li>
+                        <li>UGC-style with natural lighting, quick hooks, subtitles</li>
+                        <li>Drama-led scripts outperform casual</li>
+                    </ul>
+                </div>
 
-                <h3>Video (Reels/Stories)</h3>
-                <ul>
-                    <li><strong>Optimal length:</strong> 7-15 seconds</li>
-                    <li><strong>Aspect ratio:</strong> 4:5 performs 15% better than square</li>
-                    <li>UGC-style with natural lighting, quick hooks, subtitles</li>
-                    <li>Drama-led scripts and interview formats outperform casual</li>
-                </ul>
+                <div class="card">
+                    <div class="card-title">Carousel Ads</div>
+                    <ul>
+                        <li>35% higher CTR than single-image</li>
+                        <li>Up to 10x more traffic than static</li>
+                        <li>First card is your hook</li>
+                    </ul>
+                </div>
 
-                <h3>Carousel Ads</h3>
-                <ul>
-                    <li>35% higher CTR than single-image ads</li>
-                    <li>Up to 10x more traffic than traditional static</li>
-                    <li>First card is your hook - displays by default</li>
-                </ul>
-
-                <h3>Static Images</h3>
-                <ul>
-                    <li>Best for retargeting and awareness refreshes</li>
-                    <li>Text-only static ads are trending</li>
-                </ul>
-
-                <h2>The Andromeda Algorithm</h2>
-
+                <h2>ROAS Benchmarks</h2>
                 <table>
                     <thead>
-                        <tr>
-                            <th>Old Approach (Broken)</th>
-                            <th>New Approach (Working)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>Narrow interest targeting</td><td>Broad targeting (entire country)</td></tr>
-                        <tr><td>Lookalike audiences</td><td>Audiences over 10M people</td></tr>
-                        <tr><td>Complex campaign structures</td><td>Simple (1 campaign, 1 ad set)</td></tr>
-                        <tr><td>Testing minor variations</td><td>8-15 different ad concepts</td></tr>
-                        <tr><td>Manual optimization</td><td>Trust Advantage+ automation</td></tr>
-                    </tbody>
-                </table>
-
-                <h2>ROAS Benchmarks by Category</h2>
-
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Category</th>
-                            <th>Median ROAS</th>
-                            <th>Top Performers</th>
-                        </tr>
+                        <tr><th>Category</th><th>Median</th><th>Top Performers</th></tr>
                     </thead>
                     <tbody>
                         <tr><td>Fast Fashion ($20-50)</td><td>2.5-3.5</td><td>4.0+</td></tr>
                         <tr><td>Contemporary ($50-250)</td><td>3.0-4.5</td><td>5.0+</td></tr>
-                        <tr><td>Premium ($250+)</td><td>4.0-6.0</td><td>7.0+</td></tr>
                         <tr><td>Beauty/Skincare</td><td>2.5-4.0</td><td>5.0+</td></tr>
                         <tr><td>Health/Supplements</td><td>2.0-3.5</td><td>4.0+</td></tr>
                     </tbody>
                 </table>
 
-                <p class="updated-date">Full report available in: /reports/2025-12-31-meta-ads-trends.md</p>
+                <p class="updated-date">Full report: /reports/2025-12-31-meta-ads-trends.md</p>
             </section>
 
             <!-- Video Hooks -->
             <section id="video-hooks" class="content-section">
                 <h1>Video Hook Swipe File</h1>
-                <p class="subtitle">73% of ecommerce video ads fail within the first 3 seconds. These hooks stop the scroll.</p>
+                <p class="subtitle">73% of ads fail in the first 3 seconds. These hooks stop the scroll.</p>
 
                 <div class="hook-card">
-                    <h4>Pattern 1: The Comment Skeptic (TikTok Style)</h4>
-                    <p>Display a negative comment overlay, then have the creator respond directly.</p>
+                    <h4>The Comment Skeptic</h4>
                     <div class="hook-example">[Comment: "Those seem so extra"] "Okay I get why you'd think that, but let me show you..."</div>
-                    <div class="hook-example">[Comment: "This is just a gimmick"] "I thought the same thing until..."</div>
-                    <p><strong>Why it works:</strong> Negativity psychology drives engagement. Addresses objections head-on.</p>
+                    <p><strong>Why it works:</strong> Negativity psychology drives engagement.</p>
                 </div>
 
                 <div class="hook-card">
-                    <h4>Pattern 2: People Always Ask Me</h4>
-                    <p>Leverage the trending format with natural product integration.</p>
+                    <h4>People Always Ask Me</h4>
                     <div class="hook-example">"People always ask me how I [achieve result], so here it is..."</div>
-                    <div class="hook-example">"Everyone keeps asking about my [specific thing], let me show you..."</div>
-                    <p><strong>Why it works:</strong> Creates curiosity and social proof simultaneously.</p>
+                    <p><strong>Why it works:</strong> Curiosity + social proof.</p>
                 </div>
 
                 <div class="hook-card">
-                    <h4>Pattern 3: Direct Problem Callout</h4>
-                    <p>State the pain point immediately, then pivot to solution.</p>
-                    <div class="hook-example">"Tired of [problem]? Watch this."</div>
-                    <div class="hook-example">"If you're struggling with [issue], you need to see this."</div>
-                    <div class="hook-example">"Nobody talks about [problem], so I will."</div>
+                    <h4>Direct Problem Call-Out</h4>
+                    <div class="hook-example">"If you're still dealing with [problem], stop scrolling."</div>
                     <p><strong>Why it works:</strong> Immediate resonance with target audience.</p>
                 </div>
 
                 <div class="hook-card">
-                    <h4>Pattern 4: The Surprising Statement</h4>
-                    <p>Open with something unexpected or controversial.</p>
+                    <h4>The Surprising Statement</h4>
                     <div class="hook-example">"I was today years old when I found out..."</div>
-                    <div class="hook-example">"This is the [product] nobody's talking about..."</div>
-                    <div class="hook-example">"Your [common item] isn't as good as you think."</div>
                     <p><strong>Why it works:</strong> Pattern interrupt + curiosity gap.</p>
                 </div>
 
-                <div class="hook-card">
-                    <h4>Pattern 5: Before-After Visual</h4>
-                    <p>Show dramatic transformation in first 2 seconds.</p>
-                    <div class="hook-example">[Split screen of before/after]</div>
-                    <div class="hook-example">"From this... to THIS" [visual transformation]</div>
-                    <p><strong>Why it works:</strong> Visual and impactful, shows proof immediately.</p>
-                </div>
-
-                <div class="hook-card">
-                    <h4>Pattern 6: The FOMO Trigger</h4>
-                    <p>Create urgency through scarcity or exclusivity.</p>
-                    <div class="hook-example">"This is flying off the shelves and I finally understand why..."</div>
-                    <div class="hook-example">"Run, don't walk - this won't last..."</div>
-                    <div class="hook-example">"If you see this, it's your sign to..."</div>
-                    <p><strong>Why it works:</strong> Fear of missing out drives action.</p>
-                </div>
-
-                <h2>Quick Reference: Hook Starters</h2>
+                <h2>Quick Reference</h2>
                 <table>
                     <thead>
-                        <tr>
-                            <th>Hook Type</th>
-                            <th>Template</th>
-                        </tr>
+                        <tr><th>Type</th><th>Template</th></tr>
                     </thead>
                     <tbody>
                         <tr><td>Problem</td><td>"Struggling with ___? Here's what changed everything."</td></tr>
                         <tr><td>Curiosity</td><td>"I can't believe nobody talks about this..."</td></tr>
                         <tr><td>Social Proof</td><td>"Over 10,000 people asked me about this..."</td></tr>
-                        <tr><td>Controversy</td><td>"Hot take: ___ is overrated."</td></tr>
                         <tr><td>FOMO</td><td>"This is selling out everywhere..."</td></tr>
-                        <tr><td>Personal</td><td>"I spent $1,000 on ___ before finding this."</td></tr>
-                        <tr><td>Question</td><td>"What if ___ actually worked?"</td></tr>
-                        <tr><td>Challenge</td><td>"I tried this for 30 days. Here's what happened."</td></tr>
                     </tbody>
                 </table>
 
                 <p class="updated-date">Full swipe file: /hooks/video-hooks.md</p>
             </section>
 
-            <!-- Headline Hooks -->
+            <!-- Headlines -->
             <section id="headline-hooks" class="content-section">
-                <h1>Headlines & Copy Hooks</h1>
-                <p class="subtitle">Headlines should be 40 characters or less. Pick ONE tactic: urgency, curiosity, benefit, or problem-solution.</p>
+                <h1>Headlines & Copy</h1>
+                <p class="subtitle">Headlines should be under 40 characters. Pick ONE tactic.</p>
 
-                <h2>Classic Copywriting Formulas</h2>
-
-                <div class="card">
-                    <div class="card-title">AIDA (Attention, Interest, Desire, Action)</div>
-                    <p><strong>Attention:</strong> Hook with strong headline<br>
-                    <strong>Interest:</strong> Share relatable pain/problem<br>
-                    <strong>Desire:</strong> Highlight the transformation<br>
-                    <strong>Action:</strong> Clear CTA</p>
+                <h2>AIDA Framework</h2>
+                <div class="hook-card">
                     <div class="hook-example">
-                        <strong>Finally, skincare that actually works.</strong> (Attention)<br>
-                        Tried every product on the shelf? Same. (Interest)<br>
-                        Our customers see visible results in 14 days - or your money back. (Desire)<br>
-                        Shop now and save 20%. (Action)
+                        <strong>Attention:</strong> Finally, skincare that actually works.<br>
+                        <strong>Interest:</strong> Tried every product on the shelf? Same.<br>
+                        <strong>Desire:</strong> See results in 14 days - or your money back.<br>
+                        <strong>Action:</strong> Shop now and save 20%.
                     </div>
                 </div>
 
-                <div class="card">
-                    <div class="card-title">PAS (Problem, Agitate, Solution)</div>
-                    <p><strong>Problem:</strong> State the pain point<br>
-                    <strong>Agitate:</strong> Twist the knife<br>
-                    <strong>Solution:</strong> Present the answer</p>
+                <h2>PAS Framework</h2>
+                <div class="hook-card">
                     <div class="hook-example">
-                        <strong>Waking up exhausted every morning?</strong> (Problem)<br>
-                        You've tried sleeping more, coffee, energy drinks... nothing works. (Agitate)<br>
-                        Our natural energy formula changed everything for 50,000+ customers. (Solution)
+                        <strong>Problem:</strong> Waking up exhausted every morning?<br>
+                        <strong>Agitate:</strong> You've tried everything - nothing works.<br>
+                        <strong>Solution:</strong> Our formula changed everything for 50,000+ customers.
                     </div>
                 </div>
-
-                <div class="card">
-                    <div class="card-title">FAB (Feature, Advantage, Benefit)</div>
-                    <p><strong>Feature:</strong> What it is/has<br>
-                    <strong>Advantage:</strong> Why that matters<br>
-                    <strong>Benefit:</strong> How life improves</p>
-                    <div class="hook-example">
-                        <strong>Made with 100% organic cotton</strong> (Feature)<br>
-                        So it's softer and lasts 3x longer than regular shirts (Advantage)<br>
-                        Which means you'll finally have a go-to tee that feels amazing every time (Benefit)
-                    </div>
-                </div>
-
-                <h2>Hook Categories</h2>
-
-                <h3>Number/Statistic Hooks</h3>
-                <ul>
-                    <li>"93% of customers reorder within 30 days"</li>
-                    <li>"5 million sold and counting"</li>
-                    <li>"In just 7 days, you'll notice the difference"</li>
-                </ul>
-
-                <h3>Curiosity Hooks</h3>
-                <ul>
-                    <li>"What if I told you..."</li>
-                    <li>"The one thing dermatologists don't want you to know"</li>
-                    <li>"This changes everything about [topic]"</li>
-                </ul>
-
-                <h3>Fear/FOMO Hooks</h3>
-                <ul>
-                    <li>"While you wait, your competitors are..."</li>
-                    <li>"Limited stock - only [X] left"</li>
-                    <li>"This deal ends tonight"</li>
-                </ul>
-
-                <h3>Empathy Hooks</h3>
-                <ul>
-                    <li>"We get it. [Problem] is exhausting."</li>
-                    <li>"You're not alone in feeling..."</li>
-                    <li>"For everyone who's tried everything..."</li>
-                </ul>
 
                 <p class="updated-date">Full copy guide: /hooks/headline-hooks.md</p>
             </section>
@@ -778,9 +1141,7 @@
                 <h1>Creative Frameworks</h1>
                 <p class="subtitle">Systematic approaches to creating winning ads</p>
 
-                <h2>The Creative Diversity System</h2>
-                <blockquote>In the Andromeda era, creative acts as the primary targeting signal. You need diverse assets for different angles and customer journey stages.</blockquote>
-
+                <h2>Minimum Requirements</h2>
                 <div class="stat-grid">
                     <div class="stat-card">
                         <div class="stat-value">8-15</div>
@@ -788,7 +1149,7 @@
                     </div>
                     <div class="stat-card">
                         <div class="stat-value">5-10</div>
-                        <div class="stat-label">New creatives tested weekly</div>
+                        <div class="stat-label">New creatives weekly</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-value">2-4 wks</div>
@@ -796,77 +1157,16 @@
                     </div>
                 </div>
 
-                <h2>Framework 1: UGC Video Structure (H-P-S-P-C)</h2>
-
+                <h2>UGC Video Structure</h2>
                 <table>
                     <thead>
-                        <tr>
-                            <th>Section</th>
-                            <th>Duration</th>
-                            <th>Content</th>
-                        </tr>
+                        <tr><th>Section</th><th>Duration</th><th>Content</th></tr>
                     </thead>
                     <tbody>
-                        <tr><td><strong>Hook</strong></td><td>0-3 sec</td><td>Attention-grabbing opener</td></tr>
-                        <tr><td><strong>Problem</strong></td><td>3-7 sec</td><td>Relatable pain point</td></tr>
-                        <tr><td><strong>Solution</strong></td><td>7-12 sec</td><td>Introduce product</td></tr>
-                        <tr><td><strong>Proof</strong></td><td>12-18 sec</td><td>Show results/demo</td></tr>
-                        <tr><td><strong>CTA</strong></td><td>18-20 sec</td><td>Clear call to action</td></tr>
-                    </tbody>
-                </table>
-
-                <h2>Framework 2: Carousel Narratives</h2>
-
-                <h3>Story Arc (5 cards)</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Card</th>
-                            <th>Content</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>1</td><td><strong>Hook</strong> - Problem or attention grabber</td></tr>
-                        <tr><td>2</td><td><strong>Agitate</strong> - Expand on the problem</td></tr>
-                        <tr><td>3</td><td><strong>Solution</strong> - Introduce product</td></tr>
-                        <tr><td>4</td><td><strong>Proof</strong> - Social proof/reviews</td></tr>
-                        <tr><td>5</td><td><strong>CTA</strong> - Shop now with offer</td></tr>
-                    </tbody>
-                </table>
-
-                <h2>Framework 3: The Angle Matrix</h2>
-                <p>Create systematic diversity by crossing customer awareness stages with content types:</p>
-
-                <h3>Customer Angles</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Angle</th>
-                            <th>Message Focus</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>Problem-Aware</td><td>"Struggling with X?"</td></tr>
-                        <tr><td>Solution-Aware</td><td>"There's a better way to X"</td></tr>
-                        <tr><td>Product-Aware</td><td>"Here's why [Product] is different"</td></tr>
-                        <tr><td>Most Aware</td><td>"You've seen us - here's a deal"</td></tr>
-                    </tbody>
-                </table>
-
-                <h2>Format Specs Quick Reference</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Format</th>
-                            <th>Dimensions</th>
-                            <th>Ideal Length</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>Feed Video</td><td>1080x1350 (4:5)</td><td>15 sec</td></tr>
-                        <tr><td>Stories/Reels</td><td>1080x1920 (9:16)</td><td>15 sec</td></tr>
-                        <tr><td>Square</td><td>1080x1080 (1:1)</td><td>Universal</td></tr>
-                        <tr><td>Carousel</td><td>1080x1080 or 1080x1350</td><td>2-10 cards</td></tr>
+                        <tr><td>Hook</td><td>0-3 sec</td><td>Attention grabber</td></tr>
+                        <tr><td>Problem</td><td>3-8 sec</td><td>Relatable pain</td></tr>
+                        <tr><td>Solution</td><td>8-15 sec</td><td>Product demo</td></tr>
+                        <tr><td>CTA</td><td>15-20 sec</td><td>Clear action</td></tr>
                     </tbody>
                 </table>
 
@@ -876,235 +1176,73 @@
             <!-- Testing Frameworks -->
             <section id="testing-frameworks" class="content-section">
                 <h1>Testing Frameworks</h1>
-                <p class="subtitle">Systematic testing to find winners - creative accounts for 70% of success</p>
+                <p class="subtitle">Creative accounts for 70% of success - test strategically</p>
 
-                <h2>The 3-Phase Testing Funnel</h2>
-
+                <h2>3-Phase Testing Funnel</h2>
                 <div class="card">
                     <div class="card-title">Phase 1: Concept Testing (Week 1-2)</div>
-                    <p><strong>Goal:</strong> Find winning creative concepts</p>
-                    <ul>
-                        <li>Budget: 10-20% of total</li>
-                        <li>Variations: 8-15 genuinely different concepts</li>
-                        <li>Metrics: Hook rate, CTR, CPM</li>
-                        <li>Kill criteria: No traction in 24-48 hours</li>
-                    </ul>
+                    <p>Budget: 10-20% | 8-15 different concepts | Kill if no traction in 24-48h</p>
                 </div>
 
                 <div class="card">
                     <div class="card-title">Phase 2: Hook/Element Testing (Week 3-4)</div>
-                    <p><strong>Goal:</strong> Optimize winning concepts</p>
-                    <ul>
-                        <li>Budget: 15% of total</li>
-                        <li>Variations: 3-5 per winning concept</li>
-                        <li>Metrics: Hook rate, watch time, CTR</li>
-                        <li>Test: Different hooks, CTAs, thumbnails</li>
-                    </ul>
+                    <p>Budget: 15% | 3-5 variations per winner | Test hooks, CTAs, thumbnails</p>
                 </div>
 
                 <div class="card">
                     <div class="card-title">Phase 3: Scale Testing (Ongoing)</div>
-                    <p><strong>Goal:</strong> Find scale potential</p>
-                    <ul>
-                        <li>Platform: Advantage+ Shopping Campaigns</li>
-                        <li>Metrics: CPA, ROAS, scale ceiling</li>
-                        <li>Action: Move winners to main campaigns</li>
-                    </ul>
+                    <p>Use Advantage+ | Move winners to main campaigns | Monitor CPA/ROAS</p>
                 </div>
 
-                <h2>Kill/Scale Decision Tree</h2>
-                <div class="card">
-                    <pre style="color: var(--text); font-size: 0.85rem;">
-Is the ad getting impressions?
-├── NO → Check targeting/bid strategy
-└── YES → Check Hook Rate (25%+ target)
-    ├── Below 20% → Kill within 24-48 hours
-    └── Above 20% → Check CTR (0.9%+ target)
-        ├── Below 0.7% → Kill or test new hooks
-        └── Above 0.9% → Check CPA
-            ├── Above target → Optimize or kill
-            └── At/below target → SCALE</pre>
-                </div>
-
-                <h2>Budget Allocation (Example: $50K/mo)</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Category</th>
-                            <th>% of Budget</th>
-                            <th>Amount</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>Proven Winners</td><td>60%</td><td>$30,000</td></tr>
-                        <tr><td>Scaling Tests</td><td>20%</td><td>$10,000</td></tr>
-                        <tr><td>New Concept Tests</td><td>15%</td><td>$7,500</td></tr>
-                        <tr><td>Wild Card Tests</td><td>5%</td><td>$2,500</td></tr>
-                    </tbody>
-                </table>
-
-                <h2>Key Metrics to Track</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Metric</th>
-                            <th>Target</th>
-                            <th>What It Tells You</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>Hook Rate</td><td>25%+</td><td>3-sec views / impressions</td></tr>
-                        <tr><td>CTR</td><td>0.90-1.60%</td><td>Interest level</td></tr>
-                        <tr><td>ThruPlay Rate</td><td>15%+</td><td>Content engagement</td></tr>
-                        <tr><td>CPA</td><td>Below target</td><td>Acquisition efficiency</td></tr>
-                    </tbody>
-                </table>
-
-                <p class="updated-date">Full testing guide: /frameworks/testing-frameworks.md</p>
+                <p class="updated-date">Full guide: /frameworks/testing-frameworks.md</p>
             </section>
 
             <!-- Competitors -->
             <section id="competitors" class="content-section">
                 <h1>Competitor Tracking</h1>
-                <p class="subtitle">Track which hooks competitors repeat - if they keep investing, it's working</p>
+                <p class="subtitle">Track what competitors repeat - if they keep investing, it's working</p>
 
-                <h2>Research Tools</h2>
-
+                <h2>Tools</h2>
                 <table>
                     <thead>
-                        <tr>
-                            <th>Tool</th>
-                            <th>Price</th>
-                            <th>Best For</th>
-                        </tr>
+                        <tr><th>Tool</th><th>Price</th><th>Best For</th></tr>
                     </thead>
                     <tbody>
-                        <tr><td><strong>Meta Ads Library</strong></td><td>Free</td><td>Official database of all active ads</td></tr>
-                        <tr><td>AdSpy</td><td>$$$</td><td>Historical database (177M+ ads)</td></tr>
-                        <tr><td>Minea</td><td>$49/mo</td><td>Ecommerce/trending products</td></tr>
-                        <tr><td>MagicBrief</td><td>$249/mo</td><td>DTC creative insights</td></tr>
-                        <tr><td>AdFlex</td><td>$99/mo</td><td>Landing page/funnel analysis</td></tr>
+                        <tr><td>Meta Ads Library</td><td>Free</td><td>Official database</td></tr>
+                        <tr><td>Minea</td><td>$49/mo</td><td>Ecommerce products</td></tr>
+                        <tr><td>MagicBrief</td><td>$249/mo</td><td>DTC insights</td></tr>
                     </tbody>
                 </table>
 
-                <h2>Weekly Tracking Checklist</h2>
-                <ul>
-                    <li>☐ Check Ad Library for each tracked competitor</li>
-                    <li>☐ Log any new ads spotted</li>
-                    <li>☐ Update "Days Running" for existing ads</li>
-                    <li>☐ Note any ads that stopped running</li>
-                    <li>☐ Identify patterns worth testing</li>
-                    <li>☐ Update swipe file with screenshots</li>
-                </ul>
-
-                <h2>Pattern Recognition</h2>
-                <p>Track which hooks each competitor repeats. If they keep investing, it's working.</p>
-
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Hook Pattern</th>
-                            <th>If Repeated</th>
-                            <th>Priority</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>"Stop scrolling if..."</td><td>3+ times</td><td><span class="tag green">High</span></td></tr>
-                        <tr><td>Problem question opener</td><td>5+ times</td><td><span class="tag green">High</span></td></tr>
-                        <tr><td>Before/after visual</td><td>2+ times</td><td><span class="tag yellow">Medium</span></td></tr>
-                        <tr><td>UGC testimonial</td><td>4+ times</td><td><span class="tag green">High</span></td></tr>
-                    </tbody>
-                </table>
-
-                <h2>Long-Running Ad Analysis</h2>
-                <blockquote>Ads that run 30+ days are proven winners. Analyze these deeply.</blockquote>
-
-                <p>For each long-runner, document:</p>
-                <ul>
-                    <li>Days running (from Ad Library)</li>
-                    <li>What makes it work (hook, visuals, messaging)</li>
-                    <li>How you can adapt the concept</li>
-                </ul>
-
-                <p class="updated-date">Full tracking template: /competitors/tracking-template.md</p>
+                <p class="updated-date">Full template: /competitors/tracking-template.md</p>
             </section>
 
             <!-- Benchmarks -->
             <section id="benchmarks" class="content-section">
                 <h1>DTC Benchmarks 2025</h1>
-                <p class="subtitle">Use these to evaluate your Meta ads performance</p>
-
-                <h2>Cost Benchmarks</h2>
-
-                <div class="stat-grid">
-                    <div class="stat-card">
-                        <div class="stat-value">$12.74</div>
-                        <div class="stat-label">Average CPM (June 2025)</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value">+18%</div>
-                        <div class="stat-label">CPM YoY increase (Q1)</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value">$27.66</div>
-                        <div class="stat-label">Average CPL (Facebook)</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value">$0.87</div>
-                        <div class="stat-label">Median CPC (Jewelry)</div>
-                    </div>
-                </div>
-
-                <h2>ROAS by Category</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Category</th>
-                            <th>Median ROAS</th>
-                            <th>Top Performers</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>Fast Fashion ($20-50)</td><td>2.5-3.5</td><td>4.0+</td></tr>
-                        <tr><td>Contemporary ($50-250)</td><td>3.0-4.5</td><td>5.0+</td></tr>
-                        <tr><td>Premium ($250+)</td><td>4.0-6.0</td><td>7.0+</td></tr>
-                        <tr><td>Beauty/Skincare</td><td>2.5-4.0</td><td>5.0+</td></tr>
-                        <tr><td>Health/Supplements</td><td>2.0-3.5</td><td>4.0+</td></tr>
-                    </tbody>
-                </table>
+                <p class="subtitle">Know your targets</p>
 
                 <h2>Engagement Benchmarks</h2>
                 <table>
                     <thead>
-                        <tr>
-                            <th>Metric</th>
-                            <th>Poor</th>
-                            <th>Average</th>
-                            <th>Good</th>
-                            <th>Excellent</th>
-                        </tr>
+                        <tr><th>Metric</th><th>Poor</th><th>Good</th><th>Excellent</th></tr>
                     </thead>
                     <tbody>
-                        <tr><td>CTR</td><td>&lt; 0.5%</td><td>0.5-0.9%</td><td>0.9-1.6%</td><td>&gt; 1.6%</td></tr>
-                        <tr><td>Hook Rate</td><td>&lt; 15%</td><td>15-25%</td><td>25-35%</td><td>&gt; 35%</td></tr>
-                        <tr><td>ThruPlay Rate</td><td>&lt; 10%</td><td>10-15%</td><td>15-25%</td><td>&gt; 25%</td></tr>
-                        <tr><td>CVR (Website)</td><td>&lt; 1%</td><td>1-2%</td><td>2-3.5%</td><td>&gt; 3.5%</td></tr>
+                        <tr><td>CTR</td><td>&lt;0.5%</td><td>0.9-1.6%</td><td>&gt;1.6%</td></tr>
+                        <tr><td>Hook Rate</td><td>&lt;15%</td><td>25-35%</td><td>&gt;35%</td></tr>
+                        <tr><td>CVR</td><td>&lt;1%</td><td>2-3.5%</td><td>&gt;3.5%</td></tr>
                     </tbody>
                 </table>
 
-                <h2>Seasonal CPM Fluctuations</h2>
+                <h2>Seasonal CPM</h2>
                 <table>
                     <thead>
-                        <tr>
-                            <th>Season</th>
-                            <th>CPM Impact</th>
-                        </tr>
+                        <tr><th>Period</th><th>CPM vs Baseline</th></tr>
                     </thead>
                     <tbody>
-                        <tr><td>January</td><td><span class="tag green">-20-30% (lowest)</span></td></tr>
-                        <tr><td>Feb-August</td><td>Baseline</td></tr>
-                        <tr><td>September-October</td><td><span class="tag yellow">+10-20%</span></td></tr>
-                        <tr><td>November-December</td><td><span class="tag" style="background: rgba(255,0,0,0.15); color: #ff6b6b;">+40-80% (highest)</span></td></tr>
+                        <tr><td>January</td><td><span class="tag green">-30% (lowest)</span></td></tr>
+                        <tr><td>Q2-Q3</td><td>Baseline to +15%</td></tr>
+                        <tr><td>November</td><td><span class="tag red">+60% (BFCM)</span></td></tr>
                     </tbody>
                 </table>
 
@@ -1113,104 +1251,47 @@ Is the ad getting impressions?
 
             <!-- Tools -->
             <section id="tools" class="content-section">
-                <h1>Tools & Resources</h1>
-                <p class="subtitle">Curated tools for Meta advertising success</p>
+                <h1>Tools Directory</h1>
+                <p class="subtitle">Recommended tools by budget level</p>
 
-                <h2>Official Meta Tools (Free)</h2>
+                <h2>Budget-Friendly ($0-100/mo)</h2>
                 <table>
                     <thead>
-                        <tr>
-                            <th>Tool</th>
-                            <th>Purpose</th>
-                        </tr>
+                        <tr><th>Need</th><th>Tool</th></tr>
                     </thead>
                     <tbody>
-                        <tr><td><strong>Meta Ads Library</strong></td><td>View any active ad on Meta</td></tr>
-                        <tr><td><strong>Meta Business Suite</strong></td><td>Manage ads, pages, insights</td></tr>
-                        <tr><td><strong>Creative Hub</strong></td><td>Mock up and preview ads</td></tr>
-                        <tr><td><strong>Meta Blueprint</strong></td><td>Free courses and certifications</td></tr>
+                        <tr><td>Ad Management</td><td>Meta Ads Manager (free)</td></tr>
+                        <tr><td>Competitor Research</td><td>Meta Ads Library (free)</td></tr>
+                        <tr><td>Video Editing</td><td>CapCut (free)</td></tr>
+                        <tr><td>Graphics</td><td>Canva Free</td></tr>
                     </tbody>
                 </table>
 
-                <h2>Recommended Tool Stacks</h2>
+                <h2>Growth Stage ($100-500/mo)</h2>
+                <table>
+                    <thead>
+                        <tr><th>Need</th><th>Tool</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Automation</td><td>Revealbot ($99)</td></tr>
+                        <tr><td>Competitor</td><td>Minea ($49)</td></tr>
+                        <tr><td>Attribution</td><td>Triple Whale ($129)</td></tr>
+                    </tbody>
+                </table>
 
-                <div class="card">
-                    <div class="card-title">Budget-Friendly ($0-100/mo)</div>
-                    <ul>
-                        <li><strong>Ad Management:</strong> Meta Ads Manager (free)</li>
-                        <li><strong>Competitor Research:</strong> Meta Ads Library (free)</li>
-                        <li><strong>Video Editing:</strong> CapCut (free)</li>
-                        <li><strong>Graphics:</strong> Canva Free</li>
-                        <li><strong>Analytics:</strong> Meta + Google Analytics (free)</li>
-                    </ul>
-                </div>
-
-                <div class="card">
-                    <div class="card-title">Growth Stage ($100-500/mo)</div>
-                    <ul>
-                        <li><strong>Ad Management:</strong> Meta + Revealbot ($99/mo)</li>
-                        <li><strong>Competitor Research:</strong> Minea ($49/mo)</li>
-                        <li><strong>Creative:</strong> Canva Pro ($12.99/mo)</li>
-                        <li><strong>Attribution:</strong> Triple Whale ($129/mo)</li>
-                        <li><strong>UGC:</strong> Billo (per-video)</li>
-                    </ul>
-                </div>
-
-                <div class="card">
-                    <div class="card-title">Scale Stage ($500+/mo)</div>
-                    <ul>
-                        <li><strong>Ad Management:</strong> Madgicx or Smartly</li>
-                        <li><strong>Competitor Research:</strong> MagicBrief + AdSpy</li>
-                        <li><strong>Creative:</strong> Motion + Marpipe</li>
-                        <li><strong>Attribution:</strong> Northbeam or Triple Whale</li>
-                        <li><strong>Benchmarking:</strong> Varos</li>
-                    </ul>
-                </div>
-
-                <h2>Learning Resources</h2>
-
-                <h3>Blogs</h3>
-                <ul>
-                    <li><strong>Jon Loomer Digital</strong> - Advanced Meta tactics</li>
-                    <li><strong>Social Media Examiner</strong> - Industry news, how-tos</li>
-                    <li><strong>Motion App Blog</strong> - Creative testing guides</li>
-                </ul>
-
-                <h3>Communities</h3>
-                <ul>
-                    <li><strong>r/PPC</strong> - Reddit</li>
-                    <li><strong>r/FacebookAds</strong> - Reddit</li>
-                    <li><strong>r/ecommerce</strong> - Reddit</li>
-                    <li><strong>Foxwell Founders</strong> - Paid Slack community</li>
-                </ul>
-
-                <p class="updated-date">Full resource list: /resources/tools-and-links.md</p>
+                <p class="updated-date">Full list: /resources/tools-and-links.md</p>
             </section>
+
         </main>
     </div>
 
     <script>
         function showSection(sectionId) {
-            // Hide all sections
-            document.querySelectorAll('.content-section').forEach(section => {
-                section.classList.remove('active');
-            });
-
-            // Remove active from all nav items
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.classList.remove('active');
-            });
-
-            // Show selected section
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             document.getElementById(sectionId).classList.add('active');
-
-            // Mark nav item as active
             event.target.closest('.nav-item').classList.add('active');
-
-            // Close mobile sidebar
             document.getElementById('sidebar').classList.remove('open');
-
-            // Scroll to top
             window.scrollTo(0, 0);
         }
 
@@ -1218,28 +1299,10 @@ Is the ad getting impressions?
             document.getElementById('sidebar').classList.toggle('open');
         }
 
-        function searchContent(query) {
-            if (!query) return;
-
-            query = query.toLowerCase();
-            const sections = document.querySelectorAll('.content-section');
-
-            sections.forEach(section => {
-                const text = section.textContent.toLowerCase();
-                if (text.includes(query)) {
-                    // Could highlight matches or filter nav
-                }
-            });
-        }
-
-        // Close sidebar when clicking outside on mobile
         document.addEventListener('click', function(e) {
             const sidebar = document.getElementById('sidebar');
             const toggle = document.querySelector('.mobile-toggle');
-
-            if (window.innerWidth <= 768 &&
-                !sidebar.contains(e.target) &&
-                !toggle.contains(e.target)) {
+            if (window.innerWidth <= 768 && !sidebar.contains(e.target) && !toggle.contains(e.target)) {
                 sidebar.classList.remove('open');
             }
         });
